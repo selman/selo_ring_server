@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "selo_ring"
+require "selo_ring/cli"
+
+SeloRing::CLI.start
