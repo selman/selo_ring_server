@@ -1,10 +1,6 @@
 require 'spec_helper'
 require 'selo_ring/tool'
 
-module SeloRing::Tool
-  class << self; attr_accessor :rf end
-end
-
 describe SeloRing::Tool do
   before do
     @ts = MiniTest::Mock.new
@@ -16,8 +12,7 @@ describe SeloRing::Tool do
 
     DRb.start_service
 
-    @obj = Object.new
-    @tuple = [:name, :Test, DRbObject.new(@obj, DRb.uri), '']
+    @tuple = [:name, :Test, DRbObject.new(self), 'Test Service']
     @services = { DRb.uri => [@tuple] }
   end
 
@@ -32,8 +27,8 @@ describe SeloRing::Tool do
   it "should print all remote DRb services" do
     expected = <<-EOF
 Services on #{DRb.uri}
-\t:Test, ""
-\t\tURI: #{DRb.uri} ref: #{@obj.object_id}
+\t:Test, "Test Service"
+\t\tURI: #{DRb.uri} ref: #{self.object_id}
 EOF
 
     @ts.expect :__drburi, DRb.uri

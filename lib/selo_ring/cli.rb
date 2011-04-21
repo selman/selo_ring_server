@@ -38,11 +38,13 @@ module SeloRing
 
       case options[:copy]
       when '0'
-        FileUtils.cp_r Configuration.path[2], Configuration.path[0], :verbose => true
+        FileUtils.cp_r Configuration.path[2], Configuration.path[0]
+        puts "#{Configuration.path[2]} copied to #{Configuration.path[0]}"
       when '1'
-        FileUtils.cp_r Configuration.path[2], Configuration.path[1], :verbose => true
-      else
-        puts "Wrong path run for info:\n\tselo_ring_server config"
+        FileUtils.cp_r Configuration.path[2], Configuration.path[1]
+        puts "#{Configuration.path[2]} copied to #{Configuration.path[1]}"
+     else
+        warn "Wrong path run for info:\n\tselo_ring_server config"
       end if options[:copy]
     end
 

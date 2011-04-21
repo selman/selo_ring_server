@@ -1,10 +1,6 @@
 require 'spec_helper'
 require 'selo_ring/server'
 
-module SeloRing
-  class Server; attr_reader :ts end
-end
-
 describe SeloRing::Server do
   before do
     @rs = SeloRing::Server.new

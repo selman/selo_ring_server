@@ -1,4 +1,4 @@
-Configuration.for('selo_ring') {
+Configuration.for('selo_ring_server') {
   daemon {
     dir_mode   :normal
     multiple   false
