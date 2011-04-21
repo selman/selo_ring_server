@@ -1,3 +1,5 @@
+#!/usr/bin/env watchr
+
 # Run me with:
 # $ watchr specs.watchr
 

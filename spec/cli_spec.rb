@@ -31,19 +31,18 @@ EOF
       @ts.expect :read_all, [@tuple], [[:name, nil, DRbObject, nil]]
 
       #with list parameter
-      out, err = capture_io do
+      out, _ = capture_io do
         SeloRing::CLI.start %w(list)
       end
+
       out.must_equal expected
-      err.must_equal ""
 
       #without parameter
-      out, err = capture_io do
+      out, _ = capture_io do
         SeloRing::CLI.start []
       end
-      out.must_equal expected
-      err.must_equal ""
 
+      out.must_equal expected
       @ts.verify
     end
 

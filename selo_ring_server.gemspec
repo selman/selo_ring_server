@@ -17,9 +17,6 @@ Gem::Specification.new do |s|
   s.add_dependency('configuration', '~> 1.2')
 
   s.add_development_dependency("minitest")
-  s.add_development_dependency("simplecov")
-  s.add_development_dependency("watchr")
-  s.add_development_dependency("rev")
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
