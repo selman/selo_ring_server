@@ -8,16 +8,10 @@ describe SeloRing::CLI do
   describe "when with(out) list" do
     before do
       @ts = MiniTest::Mock.new
-
-      rf = Object.new
-      rf.instance_variable_set(:@ts, @ts)
-      def rf.lookup_ring; yield(@ts) end
-      SeloRing::Tool.rf = rf
+      set_lookup_ring(@ts)
 
       DRb.start_service
-
       @tuple = [:name, :Test, DRbObject.new(self), 'Test Service']
-      @services = { DRb.uri => [@tuple] }
     end
 
     it "should list avaliable ring servers and their services" do

@@ -58,6 +58,7 @@ module SeloRing
 
       require 'daemons'
       Daemons.run_proc("selo_ring_server", opts) do
+        require 'selo_ring/server'
         Server.new(conf.server.to_hash).start
       end
     end
