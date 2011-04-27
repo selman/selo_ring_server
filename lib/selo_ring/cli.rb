@@ -1,10 +1,12 @@
 module SeloRing
-  require 'fileutils'
   require 'thor'
 
   class CLI < Thor
+    include Thor::Actions
+
     default_task :list
-    
+    source_root File.expand_path('../', Configuration.path[2])
+
     desc "list", "List avaliable ring servers and their services"
     def list
       Tool.print_services
@@ -16,21 +18,21 @@ module SeloRing
     method_option "copy", :type => :string, :aliases => '-c', :banner =>
       "Copy default config to specified [0,1] location"
     def config
+      conf = SeloRing.conf
+
       if options[:info] || options.empty?
         puts "Configuration load order"
         Configuration.path.each_index {|p| puts "#{p} - #{Configuration.path[p]}"}
         puts
-        puts "Server:\n#{SeloRing.conf.server.to_hash}"
-        puts "Daemon:\n#{SeloRing.conf.daemon.to_hash}"
+        puts "Server:\n#{conf.server.to_hash}"
+        puts "Daemon:\n#{conf.daemon.to_hash}"
       end
 
       case options[:copy]
       when '0'
-        FileUtils.cp_r Configuration.path[2], Configuration.path[0]
-        puts "#{Configuration.path[2]} copied to #{Configuration.path[0]}"
+        directory "config", Configuration.path[0], :verbose => true
       when '1'
-        FileUtils.cp_r Configuration.path[2], Configuration.path[1]
-        puts "#{Configuration.path[2]} copied to #{Configuration.path[1]}"
+        directory "config", Configuration.path[1], :verbose => true
      else
         warn "Wrong path run for info:\n\tselo_ring_server config"
       end if options[:copy]
@@ -46,7 +48,6 @@ module SeloRing
 
       require 'daemons'
       Daemons.run_proc("selo_ring_server", opts) do
-        require 'selo_ring/server'
         Server.start(conf.server.to_hash)
       end
     end

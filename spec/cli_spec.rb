@@ -47,7 +47,8 @@ EOF
 
   describe "when config" do
     before do
-      Configuration.path[0] = Configuration.path[1] = Dir.tmpdir
+      Configuration.path[0] = Configuration.path[1] =
+        File.join(Dir.tmpdir, 'config')
     end
 
     it "should print config information with(out) info" do
