@@ -28,19 +28,26 @@ module SeloRing
     end
 
     ##
+    # Starts server
+
+    def self.start(opts={})
+      new(opts).start
+      DRb.thread.join
+    end
+
+    ##
     # Start server
 
     def start
       activity_logging if @verbose
       puts "listening on #{DRb.uri}"
       Rinda::RingServer.new @ts
-      DRb.thread.join
     end
 
     ##
     # Stop created server
 
-    def stop
+    def self.stop
       DRb.stop_service
     end
 

@@ -23,6 +23,6 @@ EOF
   end
 
   after do
-    @rs.stop
+    SeloRing::Server.stop
   end
 end

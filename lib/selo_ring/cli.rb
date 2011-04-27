@@ -1,18 +1,6 @@
 module SeloRing
   require 'fileutils'
   require 'thor'
-  require 'configuration'
-
-  Configuration.path = %w(/etc/selo /usr/local/etc/selo) << \
-  File.expand_path('../../config', __FILE__)
-
-  @conf = Configuration.for 'selo_ring_server'
-  class << self; attr_reader :conf  end
-
-  begin
-    require 'drb/unix' if conf.server.uri =~ /^drbunix/
-  rescue NoMethodError
-  end
 
   class CLI < Thor
     default_task :list
@@ -53,13 +41,13 @@ module SeloRing
       conf = SeloRing.conf
       opts = conf.daemon.to_hash.merge({
                                          :ARGV => dargs,
-                                         :stop_proc => proc { DRb.stop_service }
+                                         :stop_proc => proc { Server.stop }
                                        })
 
       require 'daemons'
       Daemons.run_proc("selo_ring_server", opts) do
         require 'selo_ring/server'
-        Server.new(conf.server.to_hash).start
+        Server.start(conf.server.to_hash)
       end
     end
   end
